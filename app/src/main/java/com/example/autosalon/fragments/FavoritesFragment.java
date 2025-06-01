@@ -15,7 +15,6 @@ import com.example.autosalon.R;
 import com.example.autosalon.activities.DetailsActivity;
 import com.example.autosalon.adapters.CarAdapter;
 import com.example.autosalon.models.Car;
-import com.example.autosalon.utils.SharedPrefsManager;
 
 import java.util.List;
 

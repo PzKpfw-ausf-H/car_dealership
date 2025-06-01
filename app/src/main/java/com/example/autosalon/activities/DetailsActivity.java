@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.autosalon.R;
 import com.example.autosalon.models.Car;
-import com.example.autosalon.utils.SharedPrefsManager;
 
 public class DetailsActivity extends AppCompatActivity {
     private ImageView detailImage;

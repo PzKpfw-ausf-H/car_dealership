@@ -1,8 +1,17 @@
 package com.example.autosalon.models;
 
-import java.io.Serializable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Car implements Serializable {
+@Entity
+public class Car{
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "is_favorite")
+    private boolean isFavorite;
+
     private String modelName;
     private String manufacturer;
     private int year;
@@ -66,6 +75,8 @@ public class Car implements Serializable {
         return this.price;
     }
 
+    public boolean isFavorite() {return isFavorite;}
+
     // сеттеры
 
     public void setModelName(String modelName) {
@@ -103,4 +114,6 @@ public class Car implements Serializable {
     public void setPrice(String price) {
         this.price = price;
     }
+
+    public void setFavorite(boolean favorite) {isFavorite = favorite;}
 }

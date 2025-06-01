@@ -15,4 +15,5 @@ import com.example.autosalon.models.User;
 @Database(entities = {User.class}, version = 1)     //Database - аннотация, указывающая список таблиц (entities) и версию БД (version)
 public abstract class AppDatabase extends RoomDatabase {    //RoomDatabase - абстрактный базовый класс, предоставляющий доступ к DAO
     public abstract UserDao userDao();
+    public abstract CarDao carDao();
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.autosalon.R;
+import com.example.autosalon.data.CarDao;
 import com.example.autosalon.models.Car;
-import com.example.autosalon.utils.SharedPrefsManager;
+import com.example.autosalon.utils.DatabaseHelper;
 
 import java.util.List;
 
@@ -24,13 +24,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     private Context context;
     private List<Car> carList;
     private OnItemClickListener listener;
+    private CarDao carDao;
 
-
-    public void updateList(List<Car> newList) {
-        carList.clear();
-        carList.addAll(newList);
-        notifyDataSetChanged();
-    }
     public interface OnItemClickListener {
         void onItemClick(Car car);
     }
@@ -39,6 +34,13 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         this.context = context;
         this.carList = carList;
         this.listener = listener;
+        this.carDao = DatabaseHelper.getDatabase(context).carDao();
+    }
+
+    public void updateList(List<Car> newList) {
+        carList.clear();
+        carList.addAll(newList);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -52,29 +54,21 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public void onBindViewHolder(@NonNull CarViewHolder holder, int position) {
         Car car = carList.get(position);
         holder.modelText.setText(car.getModelName());
-        holder.priceText.setText(car.getPrice());
 
         Glide.with(context).load(car.getImageUrl()).into(holder.imageView);
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(car));
 
-        boolean isFavorite = SharedPrefsManager.isAlreadyFavorite(context, car);
         holder.favIcon.setImageResource(
-                isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border
+                car.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border
         );
 
         holder.favIcon.setOnClickListener(v -> {
-            boolean nowFavorite = SharedPrefsManager.isAlreadyFavorite(context, car);
-
-            if (nowFavorite) {
-                SharedPrefsManager.removeFromFavorites(context, car);
-                holder.favIcon.setImageResource(R.drawable.ic_favorite_border);
-                Toast.makeText(context, "Удалено из избранного", Toast.LENGTH_SHORT).show();
-            } else {
-                SharedPrefsManager.addToFavorites(context, car);
-                holder.favIcon.setImageResource(R.drawable.ic_favorite);
-                Toast.makeText(context, "Добавлено в избранное", Toast.LENGTH_SHORT).show();
-            }
+            car.setFavorite(!car.isFavorite());
+            carDao.updateCar(car);
+            notifyItemChanged(position);
+            Toast.makeText(context,
+                    car.isFavorite() ? "Добавлено в избранное" : "Удалено из ибранного", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -96,10 +90,6 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
             favIcon = itemView.findViewById(R.id.fav_icon);
         }
     }
-
-
-
-
 
 
 }
