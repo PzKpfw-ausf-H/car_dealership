@@ -1,0 +1,63 @@
+package com.example.autosalon.activities;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.example.autosalon.R;
+import com.example.autosalon.models.Car;
+import com.example.autosalon.utils.SharedPrefsManager;
+
+public class DetailsActivity extends AppCompatActivity {
+    private ImageView detailImage;
+
+    private Button favoriteButton;
+    private TextView model, manufacturer, year, engine, volume, gearbox, drive, price;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+
+        favoriteButton = findViewById(R.id.button_favorite);
+
+        detailImage = findViewById(R.id.detail_image);
+        model = findViewById(R.id.detail_model);
+        manufacturer = findViewById(R.id.detail_manufacturer);
+        year = findViewById(R.id.detail_year);
+        engine = findViewById(R.id.detail_engine);
+        volume = findViewById(R.id.detail_volume);
+        gearbox = findViewById(R.id.detail_gearbox);
+        drive = findViewById(R.id.detail_drive);
+        price = findViewById(R.id.detail_price);
+
+        Car car = (Car) getIntent().getSerializableExtra("car");
+
+        if (car != null) {
+            Glide.with(this).load(car.getImageUrl()).into(detailImage);
+            model.setText(car.getModelName());
+            manufacturer.setText("Производитель: " + car.getManufacturer());
+            year.setText("Год выпуска: " + car.getYear());
+            engine.setText("Двигатель: " + car.getEngineType());
+            volume.setText("Объем двигателя: " + car.getEngineVolume());
+            gearbox.setText("Коробка передач: " + car.getGearBox());
+            drive.setText("Привод: " + car.getDriveGear());
+            price.setText("Цена: " + car.getPrice());
+        }
+
+        if (SharedPrefsManager.isAlreadyFavorite(this, car)) {
+            favoriteButton.setText("Уже в избранном");
+            favoriteButton.setEnabled(false);
+        } else {
+            favoriteButton.setOnClickListener(v -> {
+                SharedPrefsManager.addToFavorites(this, car);
+                favoriteButton.setText("Добавлено");
+                favoriteButton.setEnabled(false);
+            });
+        }
+    }
+}

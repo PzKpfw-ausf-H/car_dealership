@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <EditText
+        android:id="@+id/search_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Поиск по названию..."
+        android:inputType="text"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:backgroundTint="@color/black"
+        android:padding="10dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Фильтры -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Спиннеры -->
+        <Spinner
+            android:id="@+id/spinner_manufacturer"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"/>
+
+        <Spinner
+            android:id="@+id/spinner_gearbox"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinner_drive"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/carRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:contentDescription="Список автомобилей"/>
+    
+</LinearLayout>
