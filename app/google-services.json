@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "491629062877",
+    "project_id": "autosalon-app",
+    "storage_bucket": "autosalon-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491629062877:android:0b642468cdd899ff2a0934",
+        "android_client_info": {
+          "package_name": "com.example.autosalon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJZFAvnPB6z9Qh2rzg1FqssCrxUGyL_pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

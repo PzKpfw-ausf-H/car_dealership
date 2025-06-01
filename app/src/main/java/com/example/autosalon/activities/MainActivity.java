@@ -8,6 +8,7 @@ import com.example.autosalon.R;
 import com.example.autosalon.fragments.ContactsFragment;
 import com.example.autosalon.fragments.FavoritesFragment;
 import com.example.autosalon.fragments.HomeFragment;
+import com.example.autosalon.utils.FirebaseHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FirebaseHelper.loadCarsFromFirebase(this);
 
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {

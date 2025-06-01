@@ -24,4 +24,7 @@ public interface CarDao {
 
     @Query("SELECT * FROM car WHERE is_favorite = 1")
     List<Car> getFavoriteCars();
+
+    @Query("SELECT * FROM car WHERE id = :id LIMIT 1")
+    Car getCarById(int id);
 }
