@@ -6,12 +6,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.autosalon.data.CarDao;
 import com.example.autosalon.models.Car;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
 import java.util.Objects;
 
 public class FirebaseHelper {
@@ -28,6 +30,7 @@ public class FirebaseHelper {
                         }
                     }
                 }
+                FirebaseHelper.normalizeCarData(context);
                 Log.d("Firebase", "Данные успешно загружены в Room");
             }
 
@@ -37,4 +40,60 @@ public class FirebaseHelper {
             }
         });
     }
+
+    public static void normalizeCarData(Context context) {
+        CarDao carDao = DatabaseHelper.getDatabase(context).carDao();
+        List<Car> allCars = carDao.getAllCars();
+
+        for (Car car : allCars) {
+            // Привод
+            switch (car.getDriveGear().toLowerCase()) {
+                case "front-wheel drive":
+                case "передний привод":
+                    car.setDriveGear("Передний");
+                    break;
+                case "rear-wheel drive":
+                    car.setDriveGear("Задний");
+                    break;
+                case "all-wheel drive":
+                case "awd":
+                    car.setDriveGear("Полный");
+                    break;
+            }
+
+            // Коробка передач
+            switch (car.getGearBox().toLowerCase()) {
+                case "manual":
+                    car.setGearBox("Механика");
+                    break;
+                case "automatic":
+                case "автомат":
+                    car.setGearBox("Автомат");
+                    break;
+                case "cvt":
+                    car.setGearBox("Вариатор");
+                    break;
+            }
+
+            // Тип двигателя
+            switch (car.getEngineType().toLowerCase()) {
+                case "gasoline":
+                case "бензиновый":
+                    car.setEngineType("Бензиновый");
+                    break;
+                case "diesel":
+                    car.setEngineType("Дизельный");
+                    break;
+                case "electric":
+                    car.setEngineType("Электрический");
+                    break;
+                case "hybrid":
+                    car.setEngineType("Гибрид");
+                    break;
+            }
+            carDao.updateCar(car);
+
+        }
+    }
+
 }
