@@ -54,22 +54,31 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public void onBindViewHolder(@NonNull CarViewHolder holder, int position) {
         Car car = carList.get(position);
         holder.modelText.setText(car.getModelName());
+        holder.priceText.setText(car.getPrice());
 
+        // Подгружаем изображение
         Glide.with(context).load(car.getImageUrl()).into(holder.imageView);
 
+        // Слушатель нажатия на карточку
         holder.itemView.setOnClickListener(v -> listener.onItemClick(car));
 
-        holder.favIcon.setImageResource(
-                car.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border
-        );
+        // Установка иконки избранного
+        updateFavoriteIcon(holder.favIcon, car.isFavorite());
 
+        // Обработка клика на иконку избранного
         holder.favIcon.setOnClickListener(v -> {
-            car.setFavorite(!car.isFavorite());
-            carDao.updateCar(car);
-            notifyItemChanged(position);
+            boolean newState = !car.isFavorite();
+            car.setFavorite(newState);
+            carDao.updateCar(car);  // Обновляем в базе
+            updateFavoriteIcon(holder.favIcon, newState);
             Toast.makeText(context,
-                    car.isFavorite() ? "Добавлено в избранное" : "Удалено из ибранного", Toast.LENGTH_SHORT).show();
+                    newState ? "Добавлено в избранное" : "Удалено из избранного",
+                    Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void updateFavoriteIcon(ImageView icon, boolean isFavorite) {
+        icon.setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
     }
 
     @Override
@@ -90,6 +99,5 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
             favIcon = itemView.findViewById(R.id.fav_icon);
         }
     }
-
-
 }
+

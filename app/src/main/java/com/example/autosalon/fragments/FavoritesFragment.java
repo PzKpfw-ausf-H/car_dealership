@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.autosalon.R;
 import com.example.autosalon.activities.DetailsActivity;
 import com.example.autosalon.adapters.CarAdapter;
+import com.example.autosalon.utils.DatabaseHelper;
 import com.example.autosalon.models.Car;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class FavoritesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.favoritesRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        favorites = SharedPrefsManager.getFavorites(getContext());
+        favorites = DatabaseHelper.getDatabase(getContext()).carDao().getFavoriteCars();
 
         adapter = new CarAdapter(getContext(), favorites, car -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
@@ -46,22 +47,13 @@ public class FavoritesFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        favorites.clear();
+        favorites.addAll(DatabaseHelper.getDatabase(getContext()).carDao().getFavoriteCars());
+        adapter.notifyDataSetChanged();
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

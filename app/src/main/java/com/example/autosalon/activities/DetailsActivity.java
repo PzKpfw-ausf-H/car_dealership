@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.autosalon.R;
+import com.example.autosalon.data.CarDao;
+import com.example.autosalon.utils.DatabaseHelper;
 import com.example.autosalon.models.Car;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -17,10 +19,17 @@ public class DetailsActivity extends AppCompatActivity {
     private Button favoriteButton;
     private TextView model, manufacturer, year, engine, volume, gearbox, drive, price;
 
+    private CarDao carDao;
+    private Car car;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        carDao = DatabaseHelper.getDatabase(this).carDao();
+
+        car = (Car) getIntent().getSerializableExtra("car");
 
         favoriteButton = findViewById(R.id.button_favorite);
 
@@ -34,8 +43,6 @@ public class DetailsActivity extends AppCompatActivity {
         drive = findViewById(R.id.detail_drive);
         price = findViewById(R.id.detail_price);
 
-        Car car = (Car) getIntent().getSerializableExtra("car");
-
         if (car != null) {
             Glide.with(this).load(car.getImageUrl()).into(detailImage);
             model.setText(car.getModelName());
@@ -48,12 +55,13 @@ public class DetailsActivity extends AppCompatActivity {
             price.setText("Цена: " + car.getPrice());
         }
 
-        if (SharedPrefsManager.isAlreadyFavorite(this, car)) {
+        if (car.isFavorite()) {
             favoriteButton.setText("Уже в избранном");
             favoriteButton.setEnabled(false);
         } else {
             favoriteButton.setOnClickListener(v -> {
-                SharedPrefsManager.addToFavorites(this, car);
+                car.setFavorite(true);
+                carDao.updateCar(car);
                 favoriteButton.setText("Добавлено");
                 favoriteButton.setEnabled(false);
             });

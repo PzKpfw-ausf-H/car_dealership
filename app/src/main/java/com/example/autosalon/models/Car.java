@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class Car{
+import java.io.Serializable;
+
+@Entity(tableName = "car")
+public class Car implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -77,6 +79,8 @@ public class Car{
 
     public boolean isFavorite() {return isFavorite;}
 
+    public int getId() {return this.id;}
+
     // сеттеры
 
     public void setModelName(String modelName) {
@@ -116,4 +120,6 @@ public class Car{
     }
 
     public void setFavorite(boolean favorite) {isFavorite = favorite;}
+
+    public void setId(int id) {this.id = id;}
 }

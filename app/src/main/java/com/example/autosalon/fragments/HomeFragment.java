@@ -19,8 +19,10 @@ import android.widget.Spinner;
 import com.example.autosalon.R;
 import com.example.autosalon.activities.DetailsActivity;
 import com.example.autosalon.adapters.CarAdapter;
+import com.example.autosalon.data.AppDatabase;
 import com.example.autosalon.data.CarData;
 import com.example.autosalon.models.Car;
+import com.example.autosalon.utils.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,10 +49,19 @@ public class HomeFragment extends Fragment {
         spinnerGearbox = view.findViewById(R.id.spinner_gearbox);
         spinnerDrive = view.findViewById(R.id.spinner_drive);
 
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        carList = CarData.getCarList();
+        AppDatabase db = DatabaseHelper.getDatabase(getContext());
+        carList = db.carDao().getAllCars();
+
+        if (carList.isEmpty()) {
+            carList = CarData.getCarList(); //список по умолчанию
+            for (Car car : carList) {
+                db.carDao().insert(car); //Добавляем в БД
+            }
+            carList = db.carDao().getAllCars(); //Перезапрашиваем из БД
+        }
+
         filteredList = new ArrayList<>(carList);
 
         initSpinners();
@@ -64,21 +75,15 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         searchInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterCars(s.toString());
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterAll();
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
 
-
         return view;
-    } //end of onCreateView
+    }
 
     private void initSpinners() {
         Set<String> manufacturers = new HashSet<>();
@@ -104,13 +109,11 @@ public class HomeFragment extends Fragment {
         spinnerDrive.setAdapter(adapterDrive);
 
         AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 filterAll();
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         };
 
         spinnerManufacturer.setOnItemSelectedListener(listener);
@@ -140,14 +143,11 @@ public class HomeFragment extends Fragment {
         adapter.updateList(filtered);
     }
 
-    private void filterCars(String query) {
-        List<Car> filtered = new ArrayList<>();
-
-        for (Car car : carList) {
-            if (car.getModelName().toLowerCase().contains(query.toLowerCase())) {
-                filtered.add(car);
-            }
-        }
-        adapter.updateList(filtered);
+    @Override
+    public void onResume() {
+        super.onResume();
+        carList.clear();
+        carList.addAll(DatabaseHelper.getDatabase(getContext()).carDao().getAllCars());
+        filterAll(); // пересчитываем фильтр при возврате на фрагмент
     }
 }
