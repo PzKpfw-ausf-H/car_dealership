@@ -18,4 +18,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM User WHERE username = :username")
     User getUserByUsername(String username);    //Метод для проверки уникальности логина при регистрации
+
+    @Query("SELECT * FROM user WHERE username = :username LIMIT 1")
+    User findByLogin(String username);
 }

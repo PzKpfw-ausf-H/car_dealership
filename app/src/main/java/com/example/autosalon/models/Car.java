@@ -18,11 +18,19 @@ public class Car implements Serializable {
     private String manufacturer;
     private int year;
     private String imageUrl;
-    private String engineType;  //V8, V4, V6 etc
-    private String engineVolume;    //8l, 6.4L etc
-    private String gearBox;     //Robot, manual, automatic etc
-    private String driveGear;   //All-wheel drive, Front-wheel drive etc
+    private String engineType;
+    private String engineVolume;
+    private String gearBox;
+    private String driveGear;
     private String price;
+    private int mileage;
+    private int fuelLevel;
+    private int approxKmLeft;
+    private boolean isBought;
+
+    public boolean needsOilChange() {
+        return mileage > 10000;
+    }
 
     // конструкторы
     public Car() {}
@@ -80,6 +88,10 @@ public class Car implements Serializable {
     public boolean isFavorite() {return isFavorite;}
 
     public int getId() {return this.id;}
+    public int getMileage() {return this.mileage;}
+    public int getFuelLevel() {return this.fuelLevel;}
+    public int getApproxKmLeft() {return this.approxKmLeft;}
+    public boolean isBought() {return this.isBought;}
 
     // сеттеры
 
@@ -122,4 +134,8 @@ public class Car implements Serializable {
     public void setFavorite(boolean favorite) {isFavorite = favorite;}
 
     public void setId(int id) {this.id = id;}
+    public void setMileage(int mileage) {this.mileage = mileage;}
+    public void setFuelLevel(int fuelLevel) {this.fuelLevel = fuelLevel;}
+    public void setApproxKmLeft(int approxKmLeft) {this.approxKmLeft = approxKmLeft;}
+    public void setBought(boolean bought) {this.isBought = bought;}
 }
