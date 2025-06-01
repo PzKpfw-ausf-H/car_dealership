@@ -8,6 +8,7 @@ import com.example.autosalon.R;
 import com.example.autosalon.fragments.ContactsFragment;
 import com.example.autosalon.fragments.FavoritesFragment;
 import com.example.autosalon.fragments.HomeFragment;
+import com.example.autosalon.fragments.ProfileFragment;
 import com.example.autosalon.utils.FirebaseHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new FavoritesFragment();
             } else if (item.getItemId() == R.id.nav_contacts) {
                 selectedFragment = new ContactsFragment();
+            } else if (item.getItemId() == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
             }
 
             if (selectedFragment != null) {

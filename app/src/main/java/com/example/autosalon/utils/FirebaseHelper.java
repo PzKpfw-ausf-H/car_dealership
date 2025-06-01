@@ -24,7 +24,14 @@ public class FirebaseHelper {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot carSnapshot : snapshot.getChildren()) {
                     Car car = carSnapshot.getValue(Car.class);
+
                     if (car != null) {
+                        Log.d("FIREBASE", "Загружено авто: " + car.getModelName() + ", куплено: " + car.isBought());
+                        Boolean bought = carSnapshot.child("bought").getValue(Boolean.class);
+                        if (bought != null) {
+                            car.setBought(bought);
+                        }
+
                         if (DatabaseHelper.getDatabase(context).carDao().getCarById(car.getId()) == null) {
                             DatabaseHelper.getDatabase(context).carDao().insert(car);
                         }
@@ -92,8 +99,6 @@ public class FirebaseHelper {
                     break;
             }
             carDao.updateCar(car);
-
         }
     }
-
 }

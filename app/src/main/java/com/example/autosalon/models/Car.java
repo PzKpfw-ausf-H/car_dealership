@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.database.PropertyName;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 @Entity(tableName = "car")
@@ -26,6 +29,8 @@ public class Car implements Serializable {
     private int mileage;
     private int fuelLevel;
     private int approxKmLeft;
+    @ColumnInfo(name = "bought")
+    @PropertyName("bought")
     private boolean isBought;
 
     public boolean needsOilChange() {
@@ -52,45 +57,36 @@ public class Car implements Serializable {
     public String getModelName() {
         return this.modelName;
     }
-
     public String getManufacturer() {
         return this.manufacturer;
     }
-
     public int getYear() {
         return this.year;
     }
-
     public String getImageUrl() {
         return this.imageUrl;
     }
-
     public String getEngineType() {
         return this.engineType;
     }
-
     public String getEngineVolume() {
         return this.engineVolume;
     }
-
     public String getGearBox() {
         return this.gearBox;
     }
-
     public String getDriveGear() {
         return this.driveGear;
     }
-
     public String getPrice() {
         return this.price;
     }
-
     public boolean isFavorite() {return isFavorite;}
-
     public int getId() {return this.id;}
     public int getMileage() {return this.mileage;}
     public int getFuelLevel() {return this.fuelLevel;}
     public int getApproxKmLeft() {return this.approxKmLeft;}
+    @PropertyName("bought")
     public boolean isBought() {return this.isBought;}
 
     // сеттеры
@@ -137,5 +133,6 @@ public class Car implements Serializable {
     public void setMileage(int mileage) {this.mileage = mileage;}
     public void setFuelLevel(int fuelLevel) {this.fuelLevel = fuelLevel;}
     public void setApproxKmLeft(int approxKmLeft) {this.approxKmLeft = approxKmLeft;}
+    @PropertyName("bought")
     public void setBought(boolean bought) {this.isBought = bought;}
 }

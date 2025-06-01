@@ -1,4 +1,4 @@
-package com.example.autosalon;
+package com.example.autosalon.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,14 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.autosalon.R;
 import com.example.autosalon.models.Car;
 import com.example.autosalon.models.User;
 import com.example.autosalon.utils.DatabaseHelper;
@@ -41,7 +42,7 @@ public class ProfileFragment extends Fragment {
         SharedPreferences prefs = requireContext().getSharedPreferences("user_session", Context.MODE_PRIVATE);
         String login = prefs.getString("login", "Гость");
         User currentUser = DatabaseHelper.getDatabase(requireContext()).userDao().findByLogin(login);
-        usernameText.setText("Пользователь: " + (currentUser != null ? currentUser.getLogin() : "Гость"));
+        usernameText.setText("Пользователь: " + (currentUser != null ? currentUser.getUsername() : "Гость"));
 
         // Получаем купленные авто через Room
         List<Car> boughtCars = DatabaseHelper.getDatabase(getContext()).carDao().getBoughtCars();
@@ -68,6 +69,8 @@ public class ProfileFragment extends Fragment {
             ((TextView) statusCard.findViewById(R.id.txt_oil)).setText("Масло: " + (car.needsOilChange() ? "нужна замена" : "в норме"));
 
             statusContainer.addView(statusCard);
+
+            Log.d("PROFILE", "Купленное авто: " + car.getModelName());
         }
     }
 }

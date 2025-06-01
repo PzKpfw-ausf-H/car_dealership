@@ -13,7 +13,7 @@ import com.example.autosalon.models.User;
 Вершиной иерархии DAO является абстрактный класс или интерфейс с описанием общих методов,
 которые будут использоваться при взаимодействии с базой данных. Как правило, это методы поиска, удаление по ключу, обновление
  */
-@Database(entities = {User.class, Car.class}, version = 2)     //Database - аннотация, указывающая список таблиц (entities) и версию БД (version)
+@Database(entities = {User.class, Car.class}, version = 4)     //Database - аннотация, указывающая список таблиц (entities) и версию БД (version)
 public abstract class AppDatabase extends RoomDatabase {    //RoomDatabase - абстрактный базовый класс, предоставляющий доступ к DAO
     public abstract UserDao userDao();
     public abstract CarDao carDao();
