@@ -39,8 +39,8 @@ public class ProfileFragment extends Fragment {
         LinearLayout statusContainer = view.findViewById(R.id.container_car_status);
 
         // Получаем имя пользователя через Room (по текущей сессии)
-        SharedPreferences prefs = requireContext().getSharedPreferences("user_session", Context.MODE_PRIVATE);
-        String login = prefs.getString("login", "Гость");
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        String login = prefs.getString("loggedInUser", "Гость");
         User currentUser = DatabaseHelper.getDatabase(requireContext()).userDao().findByLogin(login);
         usernameText.setText("Пользователь: " + (currentUser != null ? currentUser.getUsername() : "Гость"));
 
@@ -55,7 +55,7 @@ public class ProfileFragment extends Fragment {
             TextView title = carCard.findViewById(R.id.txt_model);
             TextView specs = carCard.findViewById(R.id.txt_specs);
 
-            Glide.with(this).load(car.getImageUrl()).into(image);
+            image.setImageResource(getLocalImageResource(car.getModelName()));
             title.setText(car.getModelName());
             specs.setText(car.getEngineType() + " / " + car.getGearBox() + " / " + car.getDriveGear());
 
@@ -71,6 +71,30 @@ public class ProfileFragment extends Fragment {
             statusContainer.addView(statusCard);
 
             Log.d("PROFILE", "Купленное авто: " + car.getModelName());
+        }
+    }
+    private int getLocalImageResource(String modelName) {
+        switch (modelName.toLowerCase()) {
+            case "camry":
+                return R.drawable.camry;
+            case "bmw 3 series":
+                return R.drawable.bmw3;
+            case "kia rio":
+                return R.drawable.rio;
+            case "hyundai solaris":
+                return R.drawable.solaris;
+            case "audi a4":
+                return R.drawable.audi_a4;
+            case "tesla model 3":
+                return R.drawable.tesla3;
+            case "lada vesta":
+                return R.drawable.lada;
+            case "mustang gt":
+                return R.drawable.mustang;
+            case "model s":
+                return R.drawable.teslas;
+            default:
+                return R.drawable.placeholder;
         }
     }
 }
