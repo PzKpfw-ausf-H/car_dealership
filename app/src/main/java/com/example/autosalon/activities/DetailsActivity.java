@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.example.autosalon.R;
 import com.example.autosalon.data.CarDao;
 import com.example.autosalon.utils.DatabaseHelper;
@@ -15,8 +14,6 @@ import com.example.autosalon.models.Car;
 
 public class DetailsActivity extends AppCompatActivity {
     private ImageView detailImage;
-
-    private Button favoriteButton;
     private TextView model, manufacturer, year, engine, volume, gearbox, drive, price;
 
     private CarDao carDao;
@@ -28,10 +25,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
 
         carDao = DatabaseHelper.getDatabase(this).carDao();
-
         car = (Car) getIntent().getSerializableExtra("car");
-
-        favoriteButton = findViewById(R.id.button_favorite);
 
         detailImage = findViewById(R.id.detail_image);
         model = findViewById(R.id.detail_model);
@@ -44,7 +38,11 @@ public class DetailsActivity extends AppCompatActivity {
         price = findViewById(R.id.detail_price);
 
         if (car != null) {
-            Glide.with(this).load(car.getImageUrl()).into(detailImage);
+            // Подгрузка изображения по названию модели
+            int imageResId = getLocalImageResource(car.getModelName());
+            detailImage.setImageResource(imageResId);
+
+
             model.setText(car.getModelName());
             manufacturer.setText("Производитель: " + car.getManufacturer());
             year.setText("Год выпуска: " + car.getYear());
@@ -54,17 +52,30 @@ public class DetailsActivity extends AppCompatActivity {
             drive.setText("Привод: " + car.getDriveGear());
             price.setText("Цена: " + car.getPrice());
         }
+    }
 
-        if (car.isFavorite()) {
-            favoriteButton.setText("Уже в избранном");
-            favoriteButton.setEnabled(false);
-        } else {
-            favoriteButton.setOnClickListener(v -> {
-                car.setFavorite(true);
-                carDao.updateCar(car);
-                favoriteButton.setText("Добавлено");
-                favoriteButton.setEnabled(false);
-            });
+    private int getLocalImageResource(String modelName) {
+        switch (modelName.toLowerCase()) {
+            case "camry":
+                return R.drawable.camry;
+            case "bmw 3 series":
+                return R.drawable.bmw3;
+            case "kia rio":
+                return R.drawable.rio;
+            case "hyundai solaris":
+                return R.drawable.solaris;
+            case "audi a4":
+                return R.drawable.audi_a4;
+            case "tesla model 3":
+                return R.drawable.tesla3;
+            case "lada vesta":
+                return R.drawable.lada;
+            case "mustang gt":
+                return R.drawable.mustang;
+            case "model s":
+                return R.drawable.teslas;
+            default:
+                return R.drawable.placeholder;
         }
     }
 }
