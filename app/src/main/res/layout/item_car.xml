@@ -1,61 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    card_view:cardCornerRadius="12dp"
+    card_view:cardCornerRadius="16dp"
     card_view:cardElevation="6dp">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:background="#f0f0f0">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/car_image"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_foreground" />
+            <ImageView
+                android:id="@+id/car_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/fav_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="12dp"
+                android:src="@drawable/ic_favorite_border"
+                android:contentDescription="Favorite icon" />
+
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1"
-            android:paddingStart="10dp"
-            android:gravity="center_vertical">
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/car_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 500 000 ₽"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/car_model"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Model Name"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#000000"/>
-            <TextView
-                android:id="@+id/car_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$00,000"
+                android:text="Mercedes E-class"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#555555"/>
+                android:textStyle="normal"
+                android:layout_marginTop="4dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/button_call"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="48dp"
+                    android:text="Позвонить"
+                    android:backgroundTint="#2768F5"
+                    android:textColor="@android:color/white" />
+
+                <ImageButton
+                    android:id="@+id/button_message"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="12dp"
+                    android:backgroundTint="#19C94E"
+                    android:foregroundTint="#19C94E"
+                    android:src="@drawable/ic_message"
+                    android:contentDescription="Написать сообщение" />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/fav_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_favorite_border"
-            android:contentDescription="Добавить в избранное"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>
